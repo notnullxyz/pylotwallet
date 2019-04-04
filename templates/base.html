@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{{ url_for('static',filename='styles/main.css') }}" rel="stylesheet" type="text/css" media="all">
+    <meta charset="utf-8">
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>pylotwallet</title>
+</head>
+
+<body>
+
+{% if not current_user.is_authenticated %}
+You need to sign in and authorise this app through Eve Online SSO<br>
+<a href="{{ url_for('login') }}">
+    <img src="https://images.contentful.com/idjq7aai9ylm/18BxKSXCymyqY4QKo8KwKe/c2bdded6118472dd587c8107f24104d7/EVE_SSO_Login_Buttons_Small_White.png?w=195&amp;h=30" alt="Log in with eveonline.com" />
+</a>
+
+{% else %}
+Pilot: <strong>{{ current_user.character_name }}</strong><br>
+Balance: <strong>{{ wallet.data }}</strong> ISK<br>
+Character ID: <strong>{{ current_user.character_id }}</strong>
+<br>
+<br>
+<h3>Wallet Portal</h3>
+
+<a href="/transactions">Transactions</a>
+<br><br>
+
+<label for="toggle-1">ESI Debug</label>
+<input type="checkbox" id="toggle-1">
+
+<div class="esi-internals">
+    <strong>ESI Internals:</strong>
+    <ul>
+        <li>Character ID: {{ current_user.character_id }}</li>
+        <li>Character Owner Hash: {{ current_user.character_owner_hash }}</li>
+        <li>Access Token: {{ current_user.access_token }}</li>
+        <li>Access Token valid until: {{ current_user.access_token_expires }}</li>
+        <li>Refresh Token: {{ current_user.refresh_token }}</li>
+    </ul>
+</div>
+
+<br>
+<br>
+<br>
+<a href="{{ url_for('logout') }}">logout</a>
+{% endif %}
